@@ -1,3 +1,3 @@
 .env
 data
-setups/*/*.json
+setups/data

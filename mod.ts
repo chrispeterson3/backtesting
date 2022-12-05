@@ -1,4 +1,3 @@
-import { fetchData, filterData } from "./setups/liquidityTraps/mod.ts";
+import { getStrategyData } from "./setups/liquidityTraps/mod.ts";
 
-// getData();
-filterData();
+getStrategyData("2020-12-31", "2022-12-31");
