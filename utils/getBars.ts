@@ -7,9 +7,9 @@ const { rest } = polygonClient(POLYGON_API_KEY ?? "");
 type GetBarsData = {
   ticker: string;
   timespan?: number;
-  multiplier?: "day";
-  from: string;
-  to: string;
+  multiplier?: "day" | "minute";
+  from: string | number;
+  to: string | number;
 };
 
 export async function getBars({
