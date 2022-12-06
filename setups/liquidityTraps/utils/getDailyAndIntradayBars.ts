@@ -10,7 +10,7 @@ type GetStrategyBars = {
   }>;
 };
 
-export async function getDetailsBarsData(
+export async function getDailyAndIntradayBars(
   ticker: string,
   time = 0
 ): Promise<GetStrategyBars> {

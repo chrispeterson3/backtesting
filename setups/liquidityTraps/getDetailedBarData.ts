@@ -1,6 +1,6 @@
 import strategyData from "./data/data.json" assert { type: "json" };
 import { pLimit } from "https://deno.land/x/p_limit@v1.0.0/mod.ts";
-import { getDetailsBarsData } from "./utils/getDetailsBarsData.ts";
+import { getDailyAndIntradayBars } from "./utils/getDailyAndIntradayBars.ts";
 
 // use strategy results, get daily/5min data for chart creation
 export async function getDetailedBarData() {
@@ -12,7 +12,7 @@ export async function getDetailedBarData() {
 
     const barData = await Promise.all(
       strategyData.map(({ ticker, t }) =>
-        limit(() => getDetailsBarsData(ticker, t))
+        limit(() => getDailyAndIntradayBars(ticker, t))
       )
     );
 
