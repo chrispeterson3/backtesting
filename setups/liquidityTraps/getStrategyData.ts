@@ -36,12 +36,9 @@ export async function getStrategyData(from: string, to: string) {
       .flat()
       .filter(strategyFilter) as Array<MappedResult>;
 
-    Deno.writeTextFile(
-      `./setups/liquidityTraps/data/data.json`,
-      JSON.stringify(strategyResults)
-    );
-
     console.log("-- complete --");
+
+    return strategyResults;
   } catch (error) {
     console.log("getStrategyData() error");
     console.log(error);

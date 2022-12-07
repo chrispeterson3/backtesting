@@ -2,6 +2,7 @@ import { IAggsResults } from "../../../../polygon_io_client/mod.ts";
 
 export type MappedResult = {
   ticker: string;
+  strategyId: string;
   float: number | null;
   pdh?: number; // previousDayHigh
   pdl?: number; // previousDayLow
@@ -39,6 +40,7 @@ export function mapResults(ticker: string | undefined, float: number | null) {
     return {
       ...result,
       ticker: ticker ?? "",
+      strategyId: `${ticker}-${result.t}`,
       float,
       t: result.t,
       ndh,

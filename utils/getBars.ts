@@ -6,21 +6,21 @@ const { rest } = polygonClient(POLYGON_API_KEY ?? "");
 
 type GetBarsData = {
   ticker: string;
-  timespan?: number;
-  multiplier?: "day" | "minute";
+  timespan?: "day" | "minute";
+  multiplier?: number;
   from: string | number;
   to: string | number;
 };
 
 export async function getBars({
   ticker,
-  timespan = 1,
-  multiplier = "day",
+  multiplier = 1,
+  timespan = "day",
   from,
   to,
 }: GetBarsData): Promise<IAggs> {
   try {
-    return await rest.stocks.aggregates(ticker, timespan, multiplier, from, to);
+    return await rest.stocks.aggregates(ticker, multiplier, timespan, from, to);
   } catch (error) {
     throw new Error(error);
   }
