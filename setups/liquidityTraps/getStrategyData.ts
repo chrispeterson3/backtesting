@@ -1,18 +1,32 @@
 import { pLimit } from "https://deno.land/x/p_limit@v1.0.0/mod.ts";
 import tickers from "./data/tickers.json" assert { type: "json" };
 import { getBars } from "../../utils/getBars.ts";
-import { MappedResult, mapResults } from "./utils/mapResults.ts";
+import { StrategyResult, mapResults } from "./utils/mapResults.ts";
 
 // query to ticker subset
 export const strategyTickerQuery =
   'select * from "TickerDetail" where float <= 25000000 and "marketCap" <= 1000000000';
 
 // strategy filters
-const strategyFilter = ({ v, c, floatRotation, gap }: any) =>
-  v >= 5000000 && c >= 1 && floatRotation >= 4 && gap >= 20;
+const strategyFilter = (data: StrategyResult | undefined) => {
+  return (
+    data &&
+    data.volume &&
+    data.volume >= 5000000 &&
+    data.close &&
+    data.close >= 1 &&
+    data.floatRotation &&
+    data.floatRotation >= 4 &&
+    data.gap &&
+    data.gap >= 20
+  );
+};
 
 // use ticker query results, get daily bars, filter results for strategy
-export async function getStrategyData(from: string, to: string) {
+export async function getStrategyData(
+  from: string,
+  to: string
+): Promise<Array<StrategyResult>> {
   try {
     console.log(`fetching data for liquidity traps..`);
     console.log("...");
@@ -34,13 +48,13 @@ export async function getStrategyData(from: string, to: string) {
 
     const strategyResults = results
       .flat()
-      .filter(strategyFilter) as Array<MappedResult>;
+      .filter(strategyFilter) as Array<StrategyResult>;
 
     console.log("-- complete --");
 
     return strategyResults;
   } catch (error) {
     console.log("getStrategyData() error");
-    console.log(error);
+    throw Error(error);
   }
 }
