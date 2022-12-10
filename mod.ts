@@ -3,7 +3,7 @@ import {
   getStrategyData,
   createCharts,
   mergeData,
-} from "./setups/liquidityTraps/mod.ts";
+} from "./setups/highVolGappers/mod.ts";
 
 // !! https://deno.land/x/trading_signals@3.6.1
 
@@ -13,6 +13,6 @@ const charts = await createCharts(chartData);
 const mergedData = mergeData(strategyData, chartData, charts);
 
 Deno.writeTextFile(
-  `./setups/liquidityTraps/data/liquidityTraps-dataset.json`,
+  `./setups/highVolGappers/data/highVolGappers-dataset.json`,
   JSON.stringify(mergedData)
 );
