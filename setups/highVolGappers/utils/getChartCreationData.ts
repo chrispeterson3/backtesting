@@ -2,7 +2,7 @@ import { IAggsResults } from "../../../../polygon_io_client/mod.ts";
 import { getBars } from "../../../utils/getBars.ts";
 import type { Nullable } from "../../../types.ts";
 
-export type StrategyBars = {
+export type ChartBars = {
   ticker: string;
   strategyId: string;
   time: Nullable<number>;
@@ -12,10 +12,10 @@ export type StrategyBars = {
   }>;
 };
 
-export async function getDetailedChartData(
+export async function getChartCreationData(
   ticker: string,
   _time: Nullable<number>
-): Promise<StrategyBars> {
+): Promise<ChartBars> {
   try {
     const time = _time ?? 0;
     const { results: dailyBars } = await getBars({

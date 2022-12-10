@@ -1,14 +1,14 @@
 import { pLimit } from "https://deno.land/x/p_limit@v1.0.0/mod.ts";
 import {
-  getDetailedChartData,
-  StrategyBars,
-} from "./utils/getDetailedChartData.ts";
+  getChartCreationData,
+  ChartBars,
+} from "./utils/getChartCreationData.ts";
 import { StrategyResult } from "./utils/mapResults.ts";
 
 // use strategy results, get daily/5min data for chart creation
 export async function getChartData(
-  strategyData: Array<StrategyResult>
-): Promise<Array<StrategyBars>> {
+  StrategyResult: Array<StrategyResult>
+): Promise<Array<ChartBars>> {
   try {
     console.log("getting strategy detailed bar data..");
     console.log("...");
@@ -16,8 +16,8 @@ export async function getChartData(
     const limit = pLimit(50);
 
     const barData = await Promise.all(
-      strategyData.map(({ ticker, time }) =>
-        limit(() => getDetailedChartData(ticker, time))
+      StrategyResult.map(({ ticker, time }) =>
+        limit(() => getChartCreationData(ticker, time))
       )
     );
 

@@ -1,6 +1,6 @@
 import "https://deno.land/x/dotenv/load.ts";
 import { pLimit } from "https://deno.land/x/p_limit@v1.0.0/mod.ts";
-import { StrategyBars } from "./utils/getDetailedChartData.ts";
+import { ChartBars } from "./utils/getChartCreationData.ts";
 
 const CHART_URL = Deno.env.get("CHART_URL");
 
@@ -11,7 +11,7 @@ export type ChartResponse = {
 
 // use strategy results, get daily/5min data for chart creation
 export async function createCharts(
-  chartsData: Array<StrategyBars>
+  chartsData: Array<ChartBars>
 ): Promise<Array<ChartResponse>> {
   try {
     console.log("creating charts..");

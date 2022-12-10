@@ -1,11 +1,11 @@
 import "https://deno.land/x/dotenv/load.ts";
 import { Nullable } from "../../types.ts";
 import { ChartResponse } from "./createCharts.ts";
-import { StrategyBars } from "./utils/getDetailedChartData.ts";
 import { sum } from "../../utils/sum.ts";
 import { StrategyResult } from "./utils/mapResults.ts";
 import { toTimeZone } from "../../utils/toTimeZone.ts";
 import { IAggsResults } from "../../../polygon_io_client/mod.ts";
+import { PriceActionData } from "./utils/getPriceActionData.ts";
 
 type GetHighLow = (
   prev: IAggsResults | undefined,
@@ -21,20 +21,16 @@ type StrategyData = {
 
 const CHART_URL = Deno.env.get("CHART_URL");
 
-const getFiveMinuteBars = (
-  barData: StrategyBars | undefined
-): Array<IAggsResults> | undefined => {
-  return barData?.dataset
-    .filter((d) => d.timeframe === "5min")
-    .map(({ data }) =>
-      data.map((d) => ({
-        ...d,
-        t: d.t
-          ? toTimeZone(d.t).getHours() * 100 + toTimeZone(d.t).getMinutes()
-          : undefined,
-      }))
-    )
-    .flat();
+const getBars = (barData: PriceActionData | undefined): Array<IAggsResults> => {
+  return (
+    barData?.bars.map((d) => ({
+      ...d,
+      // transform to easier to work with "Market Time"
+      t: d.t
+        ? toTimeZone(d.t).getHours() * 100 + toTimeZone(d.t).getMinutes()
+        : undefined,
+    })) ?? []
+  );
 };
 
 const getHighOfDay: GetHighLow = (prev, curr) => {
@@ -49,7 +45,7 @@ const getLowOfDay: GetHighLow = (prev, curr) => {
 
 export function mergeData(
   strategyData: Array<StrategyResult>,
-  strategyBars: Array<StrategyBars>,
+  priceActionData: Array<PriceActionData>,
   charts: Array<ChartResponse>
 ): Array<StrategyResult & StrategyData> {
   const mergedData = strategyData.reduce<Array<StrategyResult & StrategyData>>(
@@ -57,15 +53,15 @@ export function mergeData(
       // get strategy chart
       const chart = charts.find((a) => a.strategyId === curr.strategyId);
       // get strategy daily/5min bar data
-      const barData = strategyBars.find(
+      const barData = priceActionData.find(
         (a) => a.strategyId === curr.strategyId
       );
       // get only 5 min bars; map time to readable Market time
-      const fiveMinuteBars = getFiveMinuteBars(barData);
+      const bars = getBars(barData);
 
       // split pre-market and regular sessions via "time"
-      const preMarketSession = fiveMinuteBars?.filter((d) => d.t && d.t < 925);
-      const regularSession = fiveMinuteBars?.filter(
+      const preMarketSession = bars.filter((d) => d.t && d.t < 925);
+      const regularSession = bars.filter(
         (d) => d.t && d.t >= 925 && d.t <= 1555
       );
 
@@ -73,8 +69,8 @@ export function mergeData(
       const preMarketVolume = sum(
         preMarketSession?.map((d) => d.v).filter((n) => n) as Array<number>
       );
-      const highOfDayTime = regularSession?.reduce(getHighOfDay).t;
-      const lowOfDayTime = regularSession?.reduce(getLowOfDay).t;
+      const highOfDayTime = regularSession.reduce(getHighOfDay).t;
+      const lowOfDayTime = regularSession.reduce(getLowOfDay).t;
 
       return [
         ...prev,

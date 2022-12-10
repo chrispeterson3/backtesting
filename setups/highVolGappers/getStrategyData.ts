@@ -50,13 +50,13 @@ export async function getStrategyData(
       );
     });
 
-    const strategyResults = results
+    const StrategyDatas = results
       .flat()
       .filter(strategyFilter) as Array<StrategyResult>;
 
     console.log("-- complete --");
 
-    return strategyResults;
+    return StrategyDatas;
   } catch (error) {
     console.log("getStrategyData() error");
     throw Error(error);
