@@ -38,12 +38,16 @@ export async function getStrategyData(
         tickers.map(({ ticker }) => limit(() => getBars({ ticker, from, to })))
       )
     ).map(({ ticker, results: data }) => {
-      const { float } = tickers.find((d) => d.ticker === ticker) || {
+      const { float, sicDescription, description } = tickers.find(
+        (d) => d.ticker === ticker
+      ) || {
         float: null,
       };
       const floatValue = float ? parseInt(float) : null;
 
-      return data?.map(mapResults(ticker, floatValue));
+      return data?.map(
+        mapResults({ ticker, float: floatValue, sicDescription, description })
+      );
     });
 
     const strategyResults = results

@@ -28,9 +28,24 @@ export type StrategyResult = {
   nextDayVolume: Nullable<number>;
   nextDayGap: Nullable<number>;
   followingRedDay: boolean;
+
+  description: Nullable<string>;
+  sector: Nullable<string>;
 };
 
-export function mapResults(ticker: string | undefined, float: number | null) {
+type Data = {
+  ticker: string | undefined;
+  float: Nullable<number>;
+  sicDescription?: Nullable<string>;
+  description?: Nullable<string>;
+};
+
+export function mapResults({
+  ticker,
+  float,
+  sicDescription,
+  description,
+}: Data) {
   return function (
     result: IAggsResults,
     index: number,
@@ -51,6 +66,8 @@ export function mapResults(ticker: string | undefined, float: number | null) {
     return {
       ticker: ticker ?? "",
       strategyId: `${ticker}-${result.t}`,
+      description: description ?? null,
+      sector: sicDescription ?? null,
 
       // raw data points
       open: result.o ?? null,
