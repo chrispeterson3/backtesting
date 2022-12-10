@@ -66,15 +66,15 @@ export function mergeData(
       // split pre-market and regular sessions via "time"
       const preMarketSession = fiveMinuteBars?.filter((d) => d.t && d.t < 925);
       const regularSession = fiveMinuteBars?.filter(
-        (d) => d.t && d.t >= 925 && d.t < 1555
+        (d) => d.t && d.t >= 925 && d.t <= 1555
       );
 
       // get additional datapoints
       const preMarketVolume = sum(
         preMarketSession?.map((d) => d.v).filter((n) => n) as Array<number>
       );
-      const highOfDayTime = regularSession?.reduce(getHighOfDay);
-      const lowOfDayTime = regularSession?.reduce(getLowOfDay);
+      const highOfDayTime = regularSession?.reduce(getHighOfDay).t;
+      const lowOfDayTime = regularSession?.reduce(getLowOfDay).t;
 
       return [
         ...prev,
