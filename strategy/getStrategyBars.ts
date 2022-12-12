@@ -20,10 +20,14 @@ export async function getStrategyBars({
   from,
   to,
 }: StrategyBarsData): Promise<Array<StrategyBarsResult>> {
+  console.log("getting strategy daily bars...");
   const limit = pLimit(100);
   const results = await Promise.all(
     tickers.map((ticker) => limit(() => getBars({ ticker, from, to })))
   );
+
+  console.log("");
+  console.log("-- done --");
 
   return results
     .map(
