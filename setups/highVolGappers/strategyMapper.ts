@@ -1,6 +1,6 @@
-import { IAggsResults } from "../../../../polygon_io_client/mod.ts";
-import { StrategyBarsResult } from "../../../strategy/getStrategyBars.ts";
-import { TickerData } from "../../../types.ts";
+import { IAggsResults } from "../../../polygon_io_client/mod.ts";
+import { StrategyBarsResult } from "../../strategy/getStrategyBars.ts";
+import { TickerData } from "../../types.ts";
 import { FilteredResult } from "./types.ts";
 
 export type StrategyMapper = (

@@ -1,4 +1,4 @@
-import { Nullable } from "../../../types.ts";
+import { Nullable } from "../../types.ts";
 
 export type FilteredResult = {
   ticker: string;

@@ -1,9 +1,9 @@
 import "https://deno.land/x/dotenv/load.ts";
-import { IAggsResults } from "../../../../polygon_io_client/mod.ts";
-import { sum } from "../../../utils/sum.ts";
-import { toTimeZone } from "../../../utils/toTimeZone.ts";
-import { ChartResponse } from "../createCharts.ts";
-import { PriceActionData } from "../utils/getPriceActionData.ts";
+import { IAggsResults } from "../../../polygon_io_client/mod.ts";
+import { sum } from "../../utils/sum.ts";
+import { toTimeZone } from "../../utils/toTimeZone.ts";
+import { ChartResponse } from "../../strategy/mod.ts";
+import { PriceActionData } from "./utils/getPriceActionData.ts";
 import { BacktestResult, FilteredResult } from "./types.ts";
 
 type GetHighLow = (

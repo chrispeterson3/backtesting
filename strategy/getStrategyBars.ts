@@ -1,5 +1,5 @@
 import { pLimit } from "https://deno.land/x/p_limit@v1.0.0/mod.ts";
-import { IAggs, IAggsResults } from "../../polygon_io_client/mod.ts";
+import { IAggsResults } from "../../polygon_io_client/mod.ts";
 import { getBars } from "../utils/getBars.ts";
 
 type StrategyBarsData = {
@@ -35,13 +35,4 @@ export async function getStrategyBars({
         })) ?? []
     )
     .flat();
-
-  // return results.map(
-  //   (result) =>
-  //     result.results?.map((d) => ({
-  //       ...d,
-  //       ticker: result.ticker ?? "",
-  //       strategyId: `${result.ticker}-${d.t}`,
-  //     })) ?? []
-  // );
 }

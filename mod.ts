@@ -15,7 +15,7 @@ import {
   StrategyMapper,
   StrategyFilter,
   FilteredResult,
-} from "./setups/highVolGappers/v2/mod.ts";
+} from "./setups/highVolGappers/mod.ts";
 
 // !! https://deno.land/x/trading_signals@3.6.1
 
@@ -43,11 +43,11 @@ const priceAction = await getPriceAction<Array<FilteredResult>>(
 );
 
 const charts = await createCharts(chartData);
-const result = backtestMapper(filteredStrategyData, priceAction, charts);
+const results = backtestMapper(filteredStrategyData, priceAction, charts);
 
-console.log(result);
+console.log(results);
 
 Deno.writeTextFile(
   `./setups/highVolGappers/data/highVolGappers-dataset-refactored.json`,
-  JSON.stringify(result)
+  JSON.stringify(results)
 );
