@@ -7,7 +7,7 @@ import { StrategyResult } from "./utils/mapResults.ts";
 
 // use strategy results, get daily/5min data for chart creation
 export async function getChartData(
-  StrategyResult: Array<StrategyResult>
+  strategyResult: Array<StrategyResult>
 ): Promise<Array<ChartBars>> {
   try {
     console.log("getting strategy detailed bar data..");
@@ -16,7 +16,7 @@ export async function getChartData(
     const limit = pLimit(50);
 
     const barData = await Promise.all(
-      StrategyResult.map(({ ticker, time }) =>
+      strategyResult.map(({ ticker, time }) =>
         limit(() => getChartCreationData(ticker, time))
       )
     );

@@ -1,10 +1,8 @@
 import { FilteredResult } from "./types.ts";
 
-export type HighVolGapperFilter = (
-  data: FilteredResult
-) => number | boolean | null;
+export type StrategyFilter = (data: FilteredResult) => number | boolean | null;
 
-export const filter: HighVolGapperFilter = (data: FilteredResult) => {
+export const strategyFilter: StrategyFilter = (data: FilteredResult) => {
   return (
     data &&
     data.volume &&

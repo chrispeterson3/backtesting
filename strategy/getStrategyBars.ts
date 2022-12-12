@@ -8,14 +8,9 @@ type StrategyBarsData = {
   to: string;
 };
 
-export type StrategyBarsResult = {
+export type StrategyBarsResult = IAggsResults & {
   ticker: string;
-  data: Array<
-    IAggsResults & {
-      ticker: string;
-      strategyId: string;
-    }
-  >;
+  strategyId: string;
 };
 
 // gets ticker bars for a given strategy
@@ -24,21 +19,29 @@ export async function getStrategyBars({
   tickers,
   from,
   to,
-}: StrategyBarsData): Promise<StrategyBarsResult[]> {
+}: StrategyBarsData): Promise<Array<StrategyBarsResult>> {
   const limit = pLimit(100);
-  const results = (
-    await Promise.all(
-      tickers.map((ticker) => limit(() => getBars({ ticker, from, to })))
-    )
-  ).flat();
+  const results = await Promise.all(
+    tickers.map((ticker) => limit(() => getBars({ ticker, from, to })))
+  );
 
-  return results.map((result) => ({
-    ticker: result.ticker ?? "",
-    data:
-      result.results?.map((d) => ({
-        ...d,
-        ticker: result.ticker ?? "",
-        strategyId: `${result.ticker}-${d.t}`,
-      })) ?? [],
-  }));
+  return results
+    .map(
+      (result) =>
+        result.results?.map((d) => ({
+          ...d,
+          ticker: result.ticker ?? "",
+          strategyId: `${result.ticker}-${d.t}`,
+        })) ?? []
+    )
+    .flat();
+
+  // return results.map(
+  //   (result) =>
+  //     result.results?.map((d) => ({
+  //       ...d,
+  //       ticker: result.ticker ?? "",
+  //       strategyId: `${result.ticker}-${d.t}`,
+  //     })) ?? []
+  // );
 }

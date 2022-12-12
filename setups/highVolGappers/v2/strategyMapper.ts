@@ -3,16 +3,14 @@ import { StrategyBarsResult } from "../../../strategy/getStrategyBars.ts";
 import { TickerData } from "../../../types.ts";
 import { FilteredResult } from "./types.ts";
 
-export type HighVolGapperMapper = (
-  tickerData: Array<TickerData>,
-  strategyBars: StrategyBarsResult
+export type StrategyMapper = (
+  tickers: Array<TickerData>,
+  strategyBars: Array<StrategyBarsResult>
 ) => Array<FilteredResult>;
 
-export const mapper: HighVolGapperMapper = (tickerData, strategyBars) => {
-  return strategyBars.data.map((result, index, dataset) => {
-    const tickerFundamentals = tickerData.find(
-      (a) => a.ticker === result.ticker
-    );
+export const strategyMapper: StrategyMapper = (tickers, strategyBars) => {
+  return strategyBars.map((result, index, dataset) => {
+    const tickerFundamentals = tickers.find((a) => a.ticker === result.ticker);
 
     const next = index + 1;
     const prev = index - 1;

@@ -31,3 +31,10 @@ export type FilteredResult = {
   description: Nullable<string>;
   sector: Nullable<string>;
 };
+
+export type BacktestResult = FilteredResult & {
+  chart: Nullable<string>;
+  preMarketVolume: number;
+  lowOfDayTime: Nullable<number>;
+  highOfDayTime: Nullable<number>;
+};
