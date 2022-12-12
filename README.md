@@ -5,30 +5,13 @@ backtesting is a library for analyzing stock market data using Polygon.io using 
 ## Usage
 
 ```javascript
-import {
-  getChartData,
-  getStrategyData,
-  createCharts,
-  mergeData,
-} from "./setups/highVolGappers/mod.ts"; // or a setup you define
+import { strategy } from "./strategies/*/mod.ts"; // or a strategy you define
 
-// pull strategy data
-const strategyData = await getStrategyData("2016-12-31", "2022-12-31");
-
-// get chart data
-const chartData = await getChartData(strategyData);
-
-// create charts
-const charts = await createCharts(chartData);
-
-// merge and massage data
-const mergedData = mergeData(strategyData, chartData, charts);
-
-// export data
-Deno.writeTextFile(
-  `./setups/highVolGappers/data/highVolGappers-dataset.json`,
-  JSON.stringify(mergedData)
-);
+// pulls strategy data
+// pulls intraday data
+// creates charts
+// merges data and writes to file
+await orchestrateStrategy("2022-12-09", "2022-12-31");
 ```
 
 ## Contributing

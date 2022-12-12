@@ -13,13 +13,13 @@ import { strategyFilter, StrategyFilter } from "./strategyFilter.ts";
 import { FilteredResult } from "./types.ts";
 import { backtestMapper } from "./backtestMapper.ts";
 
-export async function orchestrateStrategy() {
+export async function orchestrateStrategy(from: string, to: string) {
   const tickers = data as Array<TickerData>;
 
   const strategyBars = await getStrategyBars({
     tickers: data.map(({ ticker }) => ticker),
-    from: "2016-12-31",
-    to: "2022-12-31",
+    from,
+    to,
   });
 
   const filteredStrategyData = getFilteredStrategyResults<
@@ -41,7 +41,7 @@ export async function orchestrateStrategy() {
   const results = backtestMapper(filteredStrategyData, priceAction, charts);
 
   Deno.writeTextFile(
-    `./setups/highVolGappers/data/highVolGappers-dataset.json`,
+    `./strategies/highVolGappers/data/results.json`,
     JSON.stringify(results)
   );
 }
