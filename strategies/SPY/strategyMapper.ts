@@ -23,7 +23,6 @@ export const strategyMapper: StrategyMapper = (tickers, strategyBars) => {
       c: nextDayClose,
     }: IAggsResults = dataset[next] ?? {};
     const { c: close, o: open, ticker } = result;
-    const float = tickerFundamentals?.float ?? null;
 
     return {
       ticker: ticker ?? "",
@@ -37,10 +36,8 @@ export const strategyMapper: StrategyMapper = (tickers, strategyBars) => {
       low: result.l ?? null,
       close: result.c ?? null,
       volume: result.v ?? null,
-      float,
       time: result.t ?? null,
       closedRed: !!(open && close && close < open),
-      floatRotation: (float && result.v && result.v / float) ?? null,
 
       // daily calculations
       change:
