@@ -3,7 +3,7 @@ import { IAggsResults } from "../../../polygon_io_client/mod.ts";
 import { sum } from "../../utils/sum.ts";
 import { toTimeZone } from "../../utils/toTimeZone.ts";
 import { ChartResponse, PriceActionData } from "../../strategy/mod.ts";
-import { BacktestResult, FilteredResult } from "./types.ts";
+import { FilteredStrategyResult, FilteredResult } from "./types.ts";
 
 type GetHighLow = (
   prev: IAggsResults | undefined,
@@ -34,15 +34,21 @@ const getLow: GetHighLow = (prev, curr) => {
   return prev && prev.l && curr && curr.l && prev.l < curr.l ? prev : curr;
 };
 
-export function backtestMapper(
+export type ResultsMapper = (
   filteredStrategyData: Array<FilteredResult>,
   priceAction: Array<PriceActionData>,
   charts: Array<ChartResponse>
-): Array<BacktestResult> {
+) => Array<FilteredStrategyResult>;
+
+export const resultsMapper: ResultsMapper = (
+  filteredStrategyData,
+  priceAction,
+  charts
+) => {
   console.log("merging data..");
 
   const results = filteredStrategyData.reduce<
-    Array<FilteredResult & BacktestResult>
+    Array<FilteredResult & FilteredStrategyResult>
   >((prev, curr) => {
     // get strategy chart
     const chart = charts.find((a) => a.strategyId === curr.strategyId);
@@ -98,4 +104,4 @@ export function backtestMapper(
   console.log("-- done --");
 
   return results;
-}
+};

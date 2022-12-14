@@ -30,7 +30,7 @@ export type FilteredResult = {
   sector: Nullable<string>;
 };
 
-export type BacktestResult = FilteredResult & {
+export type FilteredStrategyResult = FilteredResult & {
   chart: Nullable<string>;
   preMarketVolume: number;
   lowOfDayTime: Nullable<number>;

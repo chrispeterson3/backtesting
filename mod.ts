@@ -1,7 +1,19 @@
-import { orchestrateStrategy as orchestrateSmallCapGappers } from "./strategies/smallCapGappers/mod.ts";
-import { orchestrateStrategy as orchestrateSPY } from "./strategies/SPY/mod.ts";
 // !! https://deno.land/x/trading_signals@3.6.1
 
-// await orchestrateSPY("2017-12-31", "2022-12-31");
+import { orchestrateStrategy } from "./strategy/orchestrateStrategy.ts";
 
-// await orchestrateSmallCapGappers("2022-12-12", "2022-12-31");
+import tickerData from "./strategies/smallCapGappers/data/tickers.json" assert { type: "json" };
+import * as strategy from "./strategies/smallCapGappers/mod.ts";
+
+// import tickerData from "./strategies/SPY/data/tickers.json" assert { type: "json" };
+// import * as strategy from "./strategies/SPY/mod.ts";
+
+await orchestrateStrategy({
+  tickerData,
+  from: "2022-12-13",
+  to: "2022-12-31",
+  strategyMapper: strategy.strategyMapper,
+  strategyFilter: strategy.strategyFilter,
+  resultsMapper: strategy.resultsMapper,
+  fileName: "./strategies/smallCapGappers/data/results",
+});
