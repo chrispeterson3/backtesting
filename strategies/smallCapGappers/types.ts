@@ -34,7 +34,13 @@ export type FilteredResult = {
 
 export type BacktestResult = FilteredResult & {
   chart: Nullable<string>;
+
   preMarketVolume: number;
+  preMarketHigh: Nullable<number>;
+  preMarketLow: Nullable<number>;
+  preMarketHighTime: Nullable<number>;
+  preMarketLowTime: Nullable<number>;
+
   lowOfDayTime: Nullable<number>;
   highOfDayTime: Nullable<number>;
 };

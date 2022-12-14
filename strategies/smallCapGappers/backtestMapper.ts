@@ -24,12 +24,12 @@ const getBars = (barData: PriceActionData | undefined): Array<IAggsResults> => {
   );
 };
 
-const getHighOfDay: GetHighLow = (prev, curr) => {
+const getHigh: GetHighLow = (prev, curr) => {
   if (!prev) return curr;
   return prev && prev.h && curr && curr.h && prev.h > curr.h ? prev : curr;
 };
 
-const getLowOfDay: GetHighLow = (prev, curr) => {
+const getLow: GetHighLow = (prev, curr) => {
   if (!prev) return curr;
   return prev && prev.l && curr && curr.l && prev.l < curr.l ? prev : curr;
 };
@@ -59,8 +59,23 @@ export function backtestMapper(
     const preMarketVolume = sum(
       preMarketSession?.map((d) => d.v).filter((n) => n) as Array<number>
     );
-    const highOfDayTime = regularSession.reduce(getHighOfDay).t;
-    const lowOfDayTime = regularSession.reduce(getLowOfDay).t;
+    const { t: highOfDayTime } = regularSession.reduce(
+      getHigh,
+      [] as IAggsResults
+    );
+    const { t: lowOfDayTime } = regularSession.reduce(
+      getLow,
+      [] as IAggsResults
+    );
+
+    const { t: preMarketHighTime, h: preMarketHigh } = preMarketSession.reduce(
+      getHigh,
+      [] as IAggsResults
+    );
+    const { t: preMarketLowTime, l: preMarketLow } = preMarketSession.reduce(
+      getLow,
+      [] as IAggsResults
+    );
 
     return [
       ...prev,
@@ -68,8 +83,13 @@ export function backtestMapper(
         ...curr,
         preMarketVolume,
         chart: chart ? `${CHART_URL}/charts/${chart.id}` : null,
-        lowOfDayTime: Number(lowOfDayTime) ?? null,
-        highOfDayTime: Number(highOfDayTime) ?? null,
+        lowOfDayTime: lowOfDayTime ?? null,
+        highOfDayTime: highOfDayTime ?? null,
+
+        preMarketHighTime: preMarketHighTime ?? null,
+        preMarketLowTime: preMarketLowTime ?? null,
+        preMarketHigh: preMarketHigh ?? null,
+        preMarketLow: preMarketLow ?? null,
       },
     ];
   }, []);

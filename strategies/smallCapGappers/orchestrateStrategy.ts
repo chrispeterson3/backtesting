@@ -41,7 +41,7 @@ export async function orchestrateStrategy(from: string, to: string) {
   const results = backtestMapper(filteredStrategyData, priceAction, charts);
 
   Deno.writeTextFile(
-    `./strategies/highVolGappers/data/results.json`,
+    `./strategies/smallCapGappers/data/results_${from}_${to}.json`,
     JSON.stringify(results)
   );
 }
