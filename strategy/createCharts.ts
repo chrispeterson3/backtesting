@@ -17,8 +17,8 @@ export async function createCharts(
 
   const limit = pLimit(5);
 
-  console.log("");
   console.log("-- done --");
+  console.log("");
 
   return await Promise.all(
     chartsData.map(({ ticker, strategyId, dataset }) =>

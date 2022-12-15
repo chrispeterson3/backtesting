@@ -27,8 +27,8 @@ export async function getStrategyBars({
     tickers.map((ticker) => limit(() => getBars({ ticker, from, to })))
   );
 
-  console.log("");
   console.log("-- done --");
+  console.log("");
 
   return results
     .map(

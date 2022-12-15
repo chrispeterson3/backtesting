@@ -3,4 +3,3 @@ export * from "./getFilteredStrategyResults.ts";
 export * from "./getPriceAction.ts";
 export * from "./getChartData.ts";
 export * from "./createCharts.ts";
-export * from "./getBacktestResults.ts";

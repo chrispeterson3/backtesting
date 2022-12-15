@@ -11,8 +11,8 @@ export function getFilteredStrategyResults<T extends Function, U, V>(
 
   const results = mapper(tickers, strategyBars);
 
-  console.log("");
   console.log("-- done --");
+  console.log("");
 
   return results.filter(filter);
 }

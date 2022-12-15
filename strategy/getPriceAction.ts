@@ -48,8 +48,8 @@ export async function getPriceAction<T extends Array<any>>(
 
   const limit = pLimit(100);
 
-  console.log("");
   console.log("-- done --");
+  console.log("");
 
   return await Promise.all(
     strategyData.map(({ ticker, time }) =>

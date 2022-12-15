@@ -9,8 +9,8 @@ export async function getChartData<T extends Array<any>>(
 
   const limit = pLimit(50);
 
-  console.log("");
   console.log("-- done --");
+  console.log("");
 
   return await Promise.all(
     results.map(({ ticker, time }) => limit(() => getChartBars(ticker, time)))
