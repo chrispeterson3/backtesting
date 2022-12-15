@@ -34,13 +34,11 @@ export type FilteredResult = {
 
 export type FilteredStrategyResult = FilteredResult & {
   chart: Nullable<string>;
-
   preMarketVolume: number;
   preMarketHigh: Nullable<number>;
   preMarketLow: Nullable<number>;
-  preMarketHighTime: Nullable<number>;
-  preMarketLowTime: Nullable<number>;
-
-  lowOfDayTime: Nullable<number>;
-  highOfDayTime: Nullable<number>;
+  preMarketHighTime: Nullable<string>;
+  preMarketLowTime: Nullable<string>;
+  lowOfDayTime: Nullable<string>;
+  highOfDayTime: Nullable<string>;
 };
