@@ -4,7 +4,6 @@ export type FilteredResult = {
   ticker: string;
   strategyId: string;
 
-  // o/h/l/c
   open: Nullable<number>;
   high: Nullable<number>;
   low: Nullable<number>;
@@ -13,7 +12,6 @@ export type FilteredResult = {
   float: Nullable<number>;
   volume: Nullable<number>;
 
-  // calculated data
   change: Nullable<number>;
   gap: Nullable<number>;
   range: Nullable<number>;
@@ -21,7 +19,6 @@ export type FilteredResult = {
   dayChange: Nullable<number>;
   closedRed: boolean;
 
-  // prev/next day data
   nextDayLow: Nullable<number>;
   nextDayHigh: Nullable<number>;
   nextDayVolume: Nullable<number>;

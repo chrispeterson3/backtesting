@@ -1,4 +1,3 @@
-import { IAggsResults } from "../../../polygon_io_client/mod.ts";
 import { StrategyBarsResult } from "../../strategy/getStrategyBars.ts";
 import { TickerData } from "../../types.ts";
 import { FilteredResult } from "./types.ts";
@@ -9,29 +8,18 @@ export type StrategyMapper = (
 ) => Array<FilteredResult>;
 
 export const strategyMapper: StrategyMapper = (tickers, strategyBars) => {
-  return strategyBars.map((result, index, dataset) => {
-    const tickerFundamentals = tickers.find((a) => a.ticker === result.ticker);
+  console.log("mapping strategy data..");
 
-    const next = index + 1;
-    const prev = index - 1;
-    const { c: previousDayClose }: IAggsResults = dataset[prev] ?? {};
-    const {
-      h: nextDayHigh,
-      l: nextDayLow,
-      v: nextDayVolume,
-      o: nextDayOpen,
-      c: nextDayClose,
-    }: IAggsResults = dataset[next] ?? {};
-    const { c: close, o: open, ticker } = result;
+  const results = strategyBars.map((result) => {
+    const tickerFundamentals = tickers.find((a) => a.ticker === result.ticker);
     const float = tickerFundamentals?.float ?? null;
 
     return {
-      ticker: ticker ?? "",
-      strategyId: `${ticker}-${result.t}`,
+      ticker: result.ticker ?? "",
+      strategyId: `${result.ticker}-${result.t}`,
       description: tickerFundamentals?.description ?? null,
       sector: tickerFundamentals?.sicDescription ?? null,
 
-      // raw data points
       open: result.o ?? null,
       high: result.h ?? null,
       low: result.l ?? null,
@@ -39,41 +27,24 @@ export const strategyMapper: StrategyMapper = (tickers, strategyBars) => {
       volume: result.v ?? null,
       float,
       time: result.t ?? null,
-      closedRed: !!(open && close && close < open),
+      closedRed: !!(result.o && result.c && result.c < result.o),
       floatRotation: (float && result.v && result.v / float) ?? null,
 
-      // daily calculations
-      change:
-        (close &&
-          previousDayClose &&
-          ((close - previousDayClose) / previousDayClose) * 100) ??
-        null,
-      dayChange:
-        (result.c && result.o && ((result.c - result.o) / result.c) * 100) ??
-        null,
-      range:
-        (result.h && result.l && ((result.h - result.l) / result.h) * 100) ??
-        null,
-      gap:
-        (previousDayClose &&
-          open &&
-          ((open - previousDayClose) / previousDayClose) * 100) ??
-        null,
+      change: result.change ?? null,
+      dayChange: result.dayChange ?? null,
+      range: result.range ?? null,
+      gap: result.gap ?? null,
 
-      // next day calculations
-      nextDayGap:
-        (result.c &&
-          nextDayOpen &&
-          ((nextDayOpen - result.c) / result.c) * 100) ??
-        null,
-      nextDayHigh: nextDayHigh ?? null,
-      nextDayLow: nextDayLow ?? null,
-      nextDayVolume: nextDayVolume ?? null,
-      followingRedDay: !!(
-        nextDayOpen &&
-        nextDayClose &&
-        nextDayClose < nextDayOpen
-      ),
+      nextDayGap: result.nextDayGap ?? null,
+      nextDayHigh: result.ndh ?? null,
+      nextDayLow: result.ndl ?? null,
+      nextDayVolume: result.ndv ?? null,
+      followingRedDay: !!(result.ndo && result.ndc && result.ndc < result.ndo),
     };
   });
+
+  console.log("-- done --");
+  console.log("");
+
+  return results;
 };

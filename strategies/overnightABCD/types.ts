@@ -15,15 +15,12 @@ export type FilteredResult = {
 
   averageVolume: Nullable<number>;
 
-  // calculated data
   change: Nullable<number>;
   gap: Nullable<number>;
   range: Nullable<number>;
-  floatRotation: Nullable<number>;
   dayChange: Nullable<number>;
   closedRed: boolean;
 
-  // prev/next day data
   nextDayLow: Nullable<number>;
   nextDayHigh: Nullable<number>;
   nextDayVolume: Nullable<number>;
@@ -40,8 +37,6 @@ export type FilteredStrategyResult = FilteredResult & {
   preMarketVolume: number;
   preMarketHigh: Nullable<number>;
   preMarketLow: Nullable<number>;
-  preMarketHighTime: Nullable<number>;
-  preMarketLowTime: Nullable<number>;
 
   lowOfDayTime: Nullable<number>;
   highOfDayTime: Nullable<number>;

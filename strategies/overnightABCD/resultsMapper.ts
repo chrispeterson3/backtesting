@@ -13,8 +13,8 @@ const CHART_URL = Deno.env.get("CHART_URL");
 
 export type ResultsMapper = (
   filteredStrategyData: Array<FilteredResult>,
-  priceAction: Array<PriceActionData>,
-  charts: Array<ChartResponse>
+  priceAction: { [key: string]: PriceActionData },
+  charts: { [key: string]: ChartResponse }
 ) => Array<FilteredStrategyResult>;
 
 export const resultsMapper: ResultsMapper = (
@@ -26,10 +26,8 @@ export const resultsMapper: ResultsMapper = (
 
   const results = filteredStrategyData.reduce<Array<FilteredStrategyResult>>(
     (prev, curr) => {
-      const chart = charts.find((a) => a.strategyId === curr.strategyId);
-      const barData = priceAction.find(
-        (a) => a.strategyId === curr.strategyId
-      )?.bars;
+      const chart = charts[curr.strategyId];
+      const barData = priceAction[curr.strategyId]?.bars;
 
       const sessionData = getSessionData(barData);
 
@@ -43,9 +41,6 @@ export const resultsMapper: ResultsMapper = (
 
           lowOfDayTime: sessionData.sessionLowOfDayTime,
           highOfDayTime: sessionData.sessionHighOfDayTime,
-
-          preMarketHighTime: sessionData.pmSessionHighTime,
-          preMarketLowTime: sessionData.pmSessionLowTime,
 
           preMarketHigh: sessionData.pmSessionHigh,
           preMarketLow: sessionData.pmSessionLow,

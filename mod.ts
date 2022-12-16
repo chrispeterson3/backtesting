@@ -10,11 +10,8 @@ import * as strategy from "./strategies/overnightABCD/mod.ts";
 
 await orchestrateStrategy({
   tickerData,
-  // from: "2017-01-01",
-  // to: "2017-12-31",
-  from: "2022-12-12",
-  to: "2022-12-15",
-  strategyMapper: strategy.strategyMapper,
+  from: "2017-01-01",
+  to: "2017-12-31",
   strategyFilter: strategy.strategyFilter,
   resultsMapper: strategy.resultsMapper,
   fileName: `./strategies/${strategy.strategyName}/data/results`,

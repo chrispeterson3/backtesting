@@ -55,8 +55,8 @@ export const resultsMapper: ResultsMapper = (
     []
   );
 
-  console.log("");
   console.log("-- done --");
+  console.log("");
 
   return results;
 };

@@ -9,15 +9,11 @@ type OrchestrateStrategyData = {
   from: string;
   to: string;
   fileName: string;
-  strategyMapper: (
-    tickerData: Array<TickerData>,
-    strategyBars: Array<StrategyBarsResult>
-  ) => any;
   strategyFilter: (filter: any) => any;
   resultsMapper: (
     filteredStrategyData: Array<any>,
-    priceAction: Array<PriceActionData>,
-    charts: Array<ChartResponse>
+    priceAction: { [key: string]: PriceActionData },
+    charts: { [key: string]: ChartResponse }
   ) => any;
 };
 
@@ -25,27 +21,29 @@ export async function orchestrateStrategy<T>({
   tickerData,
   from,
   to,
-  strategyMapper,
   strategyFilter,
   resultsMapper,
   fileName,
 }: OrchestrateStrategyData): Promise<T> {
-  const strategyBars = await getStrategyBars({
-    tickers: tickerData.map(({ ticker }) => ticker),
-    from,
-    to,
-  });
+  const strategyBars = (
+    await getStrategyBars({
+      tickers: tickerData,
+      from,
+      to,
+    })
+  ).filter(strategyFilter);
 
-  const filteredStrategyData = strategyMapper(tickerData, strategyBars).filter(
-    strategyFilter
-  );
+  const chartData = await getChartData(strategyBars);
 
-  const chartData = await getChartData(filteredStrategyData);
+  const priceAction = (await getPriceAction(strategyBars, 5)).reduce<{
+    [key: string]: PriceActionData;
+  }>((prev, curr) => ({ ...prev, [curr.strategyId]: curr }), {});
 
-  const priceAction = await getPriceAction(filteredStrategyData, 5);
+  const charts = (await createCharts(chartData)).reduce<{
+    [key: string]: ChartResponse;
+  }>((prev, curr) => ({ ...prev, [curr.strategyId]: curr }), {});
 
-  const charts = await createCharts(chartData);
-  const results = resultsMapper(filteredStrategyData, priceAction, charts);
+  const results = resultsMapper(strategyBars, priceAction, charts);
 
   Deno.writeTextFile(`${fileName}_${from}_${to}.json`, JSON.stringify(results));
 
