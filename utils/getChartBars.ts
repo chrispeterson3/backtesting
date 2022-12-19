@@ -14,7 +14,8 @@ export type ChartBars = {
 
 export async function getChartBars(
   ticker: string,
-  time: Nullable<number>
+  time: Nullable<number>,
+  to: Nullable<number>
 ): Promise<ChartBars> {
   try {
     const barTime = time ?? 0;
@@ -29,7 +30,7 @@ export async function getChartBars(
       timespan: "minute",
       multiplier: 5,
       from: barTime,
-      to: barTime + 172800000, // plus 48 hours
+      to: to ?? barTime,
     });
 
     return {

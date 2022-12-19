@@ -32,6 +32,7 @@ export type StrategyBarsResult = {
   previousDayLow: Nullable<number>;
   previousDayClose: Nullable<number>;
 
+  nextDayTime: Nullable<number>;
   nextDayOpen: Nullable<number>;
   nextDayHigh: Nullable<number>;
   nextDayLow: Nullable<number>;
@@ -77,6 +78,7 @@ export async function getStrategyBars({
           const previousDayLow = dataset[index - 1]?.l ?? null;
           const previousDayClose = dataset[index - 1]?.c ?? null;
 
+          const nextDayTime = dataset[index + 2]?.t ?? null;
           const nextDayOpen = dataset[index + 1]?.o ?? null;
           const nextDayHigh = dataset[index + 1]?.h ?? null;
           const nextDayLow = dataset[index + 1]?.l ?? null;
@@ -133,6 +135,7 @@ export async function getStrategyBars({
             previousDayLow,
             previousDayClose,
 
+            nextDayTime,
             nextDayOpen,
             nextDayHigh,
             nextDayLow,

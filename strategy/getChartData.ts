@@ -13,6 +13,8 @@ export async function getChartData<T extends Array<any>>(
   console.log("");
 
   return await Promise.all(
-    results.map(({ ticker, time }) => limit(() => getChartBars(ticker, time)))
+    results.map(({ ticker, time, nextDayTime }) =>
+      limit(() => getChartBars(ticker, time, nextDayTime))
+    )
   );
 }
