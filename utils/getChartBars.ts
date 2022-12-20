@@ -30,7 +30,9 @@ export async function getChartBars(
       timespan: "minute",
       multiplier: 5,
       from: barTime,
-      to: to ?? barTime,
+      to:
+        (to && to + 86400000) ??
+        barTime + 86400000 /* always add 24 hours for next day */,
     });
 
     return {
