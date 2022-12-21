@@ -1,4 +1,5 @@
 export type Nullable<T> = T | null;
+export type Undefineable<T> = T | undefined;
 
 export type TickerData = {
   ticker: string;

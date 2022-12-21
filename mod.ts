@@ -10,7 +10,7 @@ import * as strategy from "./strategies/smallCapGappers/mod.ts";
 
 await orchestrateStrategy({
   tickerData,
-  from: "2022-12-15",
+  from: "2022-12-19",
   to: "2022-12-31",
   strategyFilter: strategy.strategyFilter,
   resultsMapper: strategy.resultsMapper,
