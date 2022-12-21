@@ -1,5 +1,15 @@
 import { pLimit } from "https://deno.land/x/p_limit@v1.0.0/mod.ts";
 import { average } from "https://deno.land/x/simplestatistics@v7.7.5/index.js";
+import {
+  getChange,
+  getDayChange,
+  getGap,
+  getNextDayGap,
+  getRange,
+  getClosedRed,
+  getFollowingRedDay,
+  getAverageVolume,
+} from "../ta/mod.ts";
 import { Nullable, TickerData } from "../types.ts";
 import { getBars } from "../utils/getBars.ts";
 
@@ -85,28 +95,6 @@ export async function getStrategyBars({
           const nextDayClose = dataset[index + 1]?.c ?? null;
           const nextDayVolume = dataset[index + 1]?.v ?? null;
 
-          const gap =
-            (previousDayClose &&
-              d.o &&
-              ((d.o - previousDayClose) / previousDayClose) * 100) ??
-            null;
-          const change =
-            (d.c &&
-              previousDayClose &&
-              ((d.c - previousDayClose) / previousDayClose) * 100) ??
-            null;
-          const dayChange = (d.c && d.o && ((d.c - d.o) / d.c) * 100) ?? null;
-          const range = (d.h && d.l && ((d.h - d.l) / d.h) * 100) ?? null;
-          const nextDayGap =
-            (d.c && nextDayOpen && ((nextDayOpen - d.c) / d.c) * 100) ?? null;
-
-          const volumeSubset = dataset
-            .map((d) => d.v ?? 0)
-            .slice(index - 9, index + 1);
-          const averageVolume = average(
-            volumeSubset.length ? volumeSubset : [d.v ?? 0]
-          );
-
           const float = fundamentals?.float ?? null;
           const sector = fundamentals?.sicDescription ?? null;
           const description = fundamentals?.description ?? null;
@@ -122,36 +110,33 @@ export async function getStrategyBars({
             volume: d.v ?? null,
             vwap: d.vw ?? null,
 
-            gap,
-            change,
-            dayChange,
-            range,
-            nextDayGap,
-
             float,
-
             previousDayOpen,
             previousDayHigh,
             previousDayLow,
             previousDayClose,
-
             nextDayTime,
             nextDayOpen,
             nextDayHigh,
             nextDayLow,
             nextDayClose,
             nextDayVolume,
-
             sector,
             description,
 
-            averageVolume,
-            closedRed: !!(d.o && d.c && d.c < d.o),
-            followingRedDay: !!(
-              nextDayOpen &&
-              nextDayClose &&
-              nextDayClose < nextDayOpen
+            gap: getGap(d.o, previousDayClose),
+            change: getChange(d.c, previousDayClose),
+            dayChange: getDayChange(d.o, d.c),
+            range: getRange(d.h, d.l),
+            nextDayGap: getNextDayGap(d.c, nextDayOpen),
+            averageVolume: getAverageVolume(
+              d.v,
+              dataset.map(({ v }) => v ?? 0),
+              index,
+              9
             ),
+            closedRed: getClosedRed(d.o, d.c),
+            followingRedDay: getFollowingRedDay(nextDayOpen, nextDayClose),
           };
         }) ?? []
     )

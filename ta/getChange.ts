@@ -2,7 +2,7 @@ import { Nullable, Undefineable } from "../types.ts";
 
 export function getChange(
   close: Undefineable<number>,
-  previousDayClose: Undefineable<number>
+  previousDayClose: Nullable<number>
 ): Nullable<number> {
   return (
     (close &&
