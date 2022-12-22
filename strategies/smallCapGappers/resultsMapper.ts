@@ -3,6 +3,7 @@ import { IAggsResults } from "../../../polygon_io_client/mod.ts";
 import { ChartResponse, PriceActionData } from "../../strategy/mod.ts";
 import { FilteredStrategyResult, FilteredResult } from "./types.ts";
 import { getSessionData } from "../../utils/getSessionData.ts";
+import { StrategyBarsResult } from "./getStrategyBars.ts";
 
 type GetHighLow = (
   prev: IAggsResults | undefined,
@@ -12,19 +13,19 @@ type GetHighLow = (
 const CHART_URL = Deno.env.get("CHART_URL");
 
 export type ResultsMapper = (
-  filteredStrategyData: Array<FilteredResult>,
+  strategyBars: Array<StrategyBarsResult>,
   priceAction: { [key: string]: PriceActionData },
   charts: { [key: string]: ChartResponse }
 ) => Array<FilteredStrategyResult>;
 
 export const resultsMapper: ResultsMapper = (
-  filteredStrategyData,
+  strategyBars,
   priceAction,
   charts
 ) => {
   console.log("merging data..");
 
-  const results = filteredStrategyData.reduce<Array<FilteredStrategyResult>>(
+  const results = strategyBars.reduce<Array<FilteredStrategyResult>>(
     (prev, curr) => {
       const chart = charts[curr.strategyId];
       const barData = priceAction[curr.strategyId]?.bars;

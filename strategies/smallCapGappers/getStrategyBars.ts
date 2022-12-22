@@ -9,9 +9,9 @@ import {
   getClosedRed,
   getFollowingRedDay,
   getAverageVolume,
-} from "../ta/mod.ts";
-import { Nullable, TickerData } from "../types.ts";
-import { getBars } from "../utils/getBars.ts";
+} from "../../ta/mod.ts";
+import { Nullable, TickerData } from "../../types.ts";
+import { getBars } from "../../utils/getBars.ts";
 
 type StrategyBarsData = {
   tickers: Array<TickerData>;
