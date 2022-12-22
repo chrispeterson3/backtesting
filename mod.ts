@@ -5,12 +5,9 @@ import { orchestrateStrategy } from "./strategy/orchestrateStrategy.ts";
 import tickerData from "./strategies/smallCapGappers/data/tickers.json" assert { type: "json" };
 import * as strategy from "./strategies/smallCapGappers/mod.ts";
 
-// import tickerData from "./strategies/overnightABCD/data/tickers.json" assert { type: "json" };
-// import * as strategy from "./strategies/overnightABCD/mod.ts";
-
 await orchestrateStrategy({
   tickerData,
-  from: "2022-12-19",
+  from: "2022-01-01",
   to: "2022-12-31",
   strategyFilter: strategy.strategyFilter,
   resultsMapper: strategy.resultsMapper,

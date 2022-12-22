@@ -14,7 +14,7 @@ export const strategyFilter: StrategyFilter = (data: FilteredResult) => {
     data.close &&
     data.close >= 1 &&
     data.gap &&
-    data.gap >= 20
+    data.gap >= 18
   );
 };
 
