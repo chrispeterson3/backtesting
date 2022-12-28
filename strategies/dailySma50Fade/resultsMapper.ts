@@ -37,20 +37,8 @@ export const resultsMapper: ResultsMapper = (
         {
           ...curr,
           chart: chart ? `${CHART_URL}/charts/${chart.id}` : null,
-
-          floatRotation:
-            (curr.float && curr.volume && curr.volume / curr.float) ?? null,
-
-          preMarketVolume: sessionData.pmSessionVolume,
-
           lowOfDayTime: sessionData.sessionLowOfDayTime,
           highOfDayTime: sessionData.sessionHighOfDayTime,
-
-          preMarketHigh: sessionData.pmSessionHigh,
-          preMarketLow: sessionData.pmSessionLow,
-
-          preMarketHighTime: sessionData.pmSessionHighTime,
-          preMarketLowTime: sessionData.pmSessionLowTime,
         },
       ] as Array<FilteredStrategyResult>;
     },
