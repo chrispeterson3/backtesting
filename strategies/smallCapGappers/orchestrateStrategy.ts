@@ -12,7 +12,7 @@ import { strategyName } from "./mod.ts";
 import { resultsMapper } from "./resultsMapper.ts";
 import { FilteredStrategyResult } from "./types.ts";
 
-const { from, to } = { from: "2022-12-22", to: "2022-12-31" };
+const { from, to } = { from: "2023-01-03", to: "2023-12-31" };
 
 export async function orchestrateStrategy(): Promise<
   Array<FilteredStrategyResult>
