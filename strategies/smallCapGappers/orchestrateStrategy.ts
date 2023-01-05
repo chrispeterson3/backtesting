@@ -1,5 +1,4 @@
 import tickerData from "./data/tickers.json" assert { type: "json" };
-import { TickerData } from "../../types.ts";
 import { getStrategyBars, StrategyBarsResult } from "./getStrategyBars.ts";
 import { getChartData } from "../../strategy/getChartData.ts";
 import {
@@ -18,6 +17,7 @@ export async function orchestrateStrategy(): Promise<
   Array<FilteredStrategyResult>
 > {
   // get filtered strategy daily bars
+  console.log("getting strategy daily bars...");
   const strategyBars = (
     await getStrategyBars({
       tickers: tickerData,
@@ -25,22 +25,36 @@ export async function orchestrateStrategy(): Promise<
       to,
     })
   ).filter(strategyFilter);
+  console.log("-- done --");
+  console.log("");
 
   // get daily/5min chart data to build charts
+  console.log("getting chart data..");
   const chartData = await getChartData(strategyBars);
+  console.log("-- done --");
+  console.log("");
 
   // create charts
+  console.log("creating charts..");
   const charts = (await createCharts(chartData)).reduce<{
     [key: string]: ChartResponse;
   }>((prev, curr) => ({ ...prev, [curr.strategyId]: curr }), {});
+  console.log("-- done --");
+  console.log("");
 
   // get 5min price action for intraday analysis
+  console.log("getting price action data..");
   const priceAction = (await getPriceAction(strategyBars, 5)).reduce<{
     [key: string]: PriceActionData;
   }>((prev, curr) => ({ ...prev, [curr.strategyId]: curr }), {});
+  console.log("-- done --");
+  console.log("");
 
   // merge stratey data and map intraday analysis
+  console.log("merging data..");
   const results = resultsMapper(strategyBars, priceAction, charts);
+  console.log("");
+  console.log("-- done --");
 
   Deno.writeTextFile(
     `./strategies/${strategyName}/data/results_${from}_${to}.json`,

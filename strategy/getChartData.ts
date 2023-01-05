@@ -5,12 +5,7 @@ import { ChartBars, getChartBars } from "../utils/getChartBars.ts";
 export async function getChartData<T extends Array<any>>(
   results: T
 ): Promise<Array<ChartBars>> {
-  console.log("getting chart data..");
-
   const limit = pLimit(50);
-
-  console.log("-- done --");
-  console.log("");
 
   return await Promise.all(
     results.map(({ ticker, time, nextDayTime }) =>

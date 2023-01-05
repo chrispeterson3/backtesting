@@ -1,7 +1,7 @@
 import "https://deno.land/x/dotenv/load.ts";
 import { IAggsResults } from "../../../polygon_io_client/mod.ts";
 import { ChartResponse, PriceActionData } from "../../strategy/mod.ts";
-import { FilteredStrategyResult, FilteredResult } from "./types.ts";
+import { FilteredStrategyResult } from "./types.ts";
 import { getSessionData } from "../../utils/getSessionData.ts";
 import { StrategyBarsResult } from "./getStrategyBars.ts";
 

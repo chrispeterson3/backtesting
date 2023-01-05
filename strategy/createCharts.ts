@@ -13,12 +13,7 @@ export type ChartResponse = {
 export async function createCharts(
   chartsData: Array<ChartBars>
 ): Promise<Array<ChartResponse>> {
-  console.log("creating charts..");
-
   const limit = pLimit(5);
-
-  console.log("-- done --");
-  console.log("");
 
   return await Promise.all(
     chartsData.map(({ ticker, strategyId, dataset }) =>
