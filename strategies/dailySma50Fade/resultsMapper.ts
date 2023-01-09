@@ -23,30 +23,20 @@ export const resultsMapper: ResultsMapper = (
   priceAction,
   charts
 ) => {
-  console.log("merging data..");
+  return strategyBars.reduce<Array<FilteredStrategyResult>>((prev, curr) => {
+    const chart = charts[curr.strategyId];
+    const barData = priceAction[curr.strategyId]?.bars;
 
-  const results = strategyBars.reduce<Array<FilteredStrategyResult>>(
-    (prev, curr) => {
-      const chart = charts[curr.strategyId];
-      const barData = priceAction[curr.strategyId]?.bars;
+    const sessionData = getSessionData(barData);
 
-      const sessionData = getSessionData(barData);
-
-      return [
-        ...prev,
-        {
-          ...curr,
-          chart: chart ? `${CHART_URL}/charts/${chart.id}` : null,
-          lowOfDayTime: sessionData.sessionLowOfDayTime,
-          highOfDayTime: sessionData.sessionHighOfDayTime,
-        },
-      ] as Array<FilteredStrategyResult>;
-    },
-    []
-  );
-
-  console.log("");
-  console.log("-- done --");
-
-  return results;
+    return [
+      ...prev,
+      {
+        ...curr,
+        chart: chart ? `${CHART_URL}/charts/${chart.id}` : null,
+        lowOfDayTime: sessionData.sessionLowOfDayTime,
+        highOfDayTime: sessionData.sessionHighOfDayTime,
+      },
+    ] as Array<FilteredStrategyResult>;
+  }, []);
 };

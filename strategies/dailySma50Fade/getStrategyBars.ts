@@ -61,8 +61,6 @@ export async function getStrategyBars({
   from,
   to,
 }: StrategyBarsData): Promise<Array<StrategyBarsResult>> {
-  console.log("getting strategy daily bars...");
-
   const limit = pLimit(100);
   const results = await Promise.all(
     tickers.map(({ ticker }) =>
@@ -137,9 +135,6 @@ export async function getStrategyBars({
       });
     })
   );
-
-  console.log("-- done --");
-  console.log("");
 
   return data.flat();
 }
