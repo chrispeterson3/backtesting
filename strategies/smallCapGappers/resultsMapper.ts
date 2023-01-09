@@ -5,11 +5,6 @@ import { FilteredStrategyResult } from "./types.ts";
 import { getSessionData } from "../../utils/getSessionData.ts";
 import { StrategyBarsResult } from "./getStrategyBars.ts";
 
-type GetHighLow = (
-  prev: IAggsResults | undefined,
-  curr: IAggsResults
-) => IAggsResults;
-
 const CHART_URL = Deno.env.get("CHART_URL");
 
 export type ResultsMapper = (
@@ -43,6 +38,8 @@ export const resultsMapper: ResultsMapper = (
         preMarketLow: sessionData.pmSessionLow,
         preMarketHighTime: sessionData.pmSessionHighTime,
         preMarketLowTime: sessionData.pmSessionLowTime,
+        hodVolume: sessionData.hodVolume,
+        volumeAtHod: sessionData.volumeAtHod,
       },
     ] as Array<FilteredStrategyResult>;
   }, []);

@@ -1,4 +1,5 @@
 import tickerData from "./data/tickers.json" assert { type: "json" };
+import { writeCSV } from "https://deno.land/x/flat/mod.ts";
 import { getStrategyBars, StrategyBarsResult } from "./getStrategyBars.ts";
 import { getChartData } from "../../strategy/getChartData.ts";
 import {
@@ -11,7 +12,7 @@ import { strategyName } from "./mod.ts";
 import { resultsMapper } from "./resultsMapper.ts";
 import { FilteredStrategyResult } from "./types.ts";
 
-const { from, to } = { from: "2023-01-03", to: "2023-12-31" };
+const { from, to } = { from: "2023-01-01", to: "2023-12-31" };
 
 export async function orchestrateStrategy(): Promise<
   Array<FilteredStrategyResult>
@@ -56,9 +57,14 @@ export async function orchestrateStrategy(): Promise<
   console.log("");
   console.log("-- done --");
 
-  Deno.writeTextFile(
-    `./strategies/${strategyName}/data/results_${from}_${to}.json`,
-    JSON.stringify(results)
+  // Deno.writeTextFile(
+  //   `./strategies/${strategyName}/data/results_${from}_${to}.json`,
+  //   JSON.stringify(results)
+  // );
+
+  await writeCSV(
+    `./strategies/${strategyName}/data/results_${from}_${to}.csv`,
+    results
   );
 
   return results;

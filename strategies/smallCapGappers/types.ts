@@ -11,4 +11,6 @@ export type FilteredStrategyResult = StrategyBarsResult & {
   preMarketLowTime: Nullable<string>;
   lowOfDayTime: Nullable<string>;
   highOfDayTime: Nullable<string>;
+  hodVolume: Nullable<number>;
+  volumeAtHod: Nullable<number>;
 };

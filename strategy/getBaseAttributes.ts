@@ -29,12 +29,15 @@ export type BaseAttributes = {
   nextDayClose: Nullable<number>;
   nextDayVolume: Nullable<number>;
   nextDayTime: Nullable<number>;
+  nextDayClosedRed: boolean;
+  nextDayClosedGreen: boolean;
   gap: Nullable<number>;
   change: Nullable<number>;
   dayChange: Nullable<number>;
   range: Nullable<number>;
   averageVolume: Nullable<number>;
   closedRed: boolean;
+  closedGreen: boolean;
 };
 
 export function getBaseAttributes(
@@ -43,19 +46,23 @@ export function getBaseAttributes(
   dailyBars: Array<IAggsResults>,
   currentDay: number
 ): BaseAttributes {
-  const previousDayOpen = dailyBars[currentDay - 1]?.o ?? null;
-  const previousDayHigh = dailyBars[currentDay - 1]?.h ?? null;
-  const previousDayLow = dailyBars[currentDay - 1]?.l ?? null;
-  const previousDayClose = dailyBars[currentDay - 1]?.c ?? null;
-  const previousDayVolume = dailyBars[currentDay - 1]?.v ?? null;
-  const previousDayTime = dailyBars[currentDay - 1]?.t ?? null;
+  const previousDay = dailyBars[currentDay - 1];
+  const nextDay = dailyBars[currentDay + 1];
 
-  const nextDayOpen = dailyBars[currentDay + 1]?.o ?? null;
-  const nextDayHigh = dailyBars[currentDay + 1]?.h ?? null;
-  const nextDayLow = dailyBars[currentDay + 1]?.l ?? null;
-  const nextDayClose = dailyBars[currentDay + 1]?.c ?? null;
-  const nextDayVolume = dailyBars[currentDay + 1]?.v ?? null;
-  const nextDayTime = dailyBars[currentDay + 1]?.t ?? null;
+  const previousDayOpen = previousDay?.o ?? null;
+  const previousDayHigh = previousDay?.h ?? null;
+  const previousDayLow = previousDay?.l ?? null;
+  const previousDayClose = previousDay?.c ?? null;
+  const previousDayVolume = previousDay?.v ?? null;
+  const previousDayTime = previousDay?.t ?? null;
+
+  const nextDayOpen = nextDay?.o ?? null;
+  const nextDayHigh = nextDay?.h ?? null;
+  const nextDayLow = nextDay?.l ?? null;
+  const nextDayClose = nextDay?.c ?? null;
+  const nextDayVolume = nextDay?.v ?? null;
+  const nextDayTime = nextDay?.t ?? null;
+  const nextDayClosedRed = getClosedRed(nextDay?.o, nextDay?.c);
 
   const gap = getGap(dailyBar.o, previousDayClose);
   const change = getChange(dailyBar.c, previousDayClose);
@@ -92,11 +99,14 @@ export function getBaseAttributes(
     nextDayClose,
     nextDayVolume,
     nextDayTime,
+    nextDayClosedRed,
+    nextDayClosedGreen: !nextDayClosedRed,
     gap,
     change,
     dayChange,
     range,
     averageVolume,
     closedRed,
+    closedGreen: !closedRed,
   };
 }

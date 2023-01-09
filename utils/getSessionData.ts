@@ -11,6 +11,8 @@ type SessionData = {
   sessionLowOfDayTime: Nullable<string>;
   pmSessionHigh: Nullable<number>;
   pmSessionLow: Nullable<number>;
+  volumeAtHod: Nullable<number>;
+  hodVolume: Nullable<number>;
 };
 
 type GetHighLow = (
@@ -42,6 +44,17 @@ export function getSessionData(
     (d) => d.t && getClockTime(d.t) >= 925 && getClockTime(d.t) <= 1555
   );
 
+  const volumeHod = data?.reduce(
+    (prev, curr) => ({
+      high: curr.h && curr.h >= prev.high ? curr.h : prev.high,
+      volume:
+        curr.h && curr.v && curr.h >= prev.high
+          ? curr.v + prev.volume
+          : prev.volume,
+    }),
+    { high: 0, volume: 0 }
+  );
+
   const pmSessionHigh = pmSession?.reduce(getHigh, [] as IAggsResults);
   const pmSessionLow = pmSession?.reduce(getLow, [] as IAggsResults);
   const sessionHigh = session?.reduce(getHigh, [] as IAggsResults);
@@ -70,6 +83,8 @@ export function getSessionData(
     pmSessionVolume,
     sessionHighOfDayTime,
     sessionLowOfDayTime,
+    volumeAtHod: sessionHigh?.v ?? null,
+    hodVolume: volumeHod?.volume ?? null,
     pmSessionHigh: pmSessionHigh?.h ?? null,
     pmSessionLow: pmSessionLow?.l ?? null,
   };
