@@ -12,6 +12,7 @@ import { resultsMapper } from "./resultsMapper.ts";
 import { FilteredStrategyResult } from "./types.ts";
 import { strategyPath } from "./mod.ts";
 
+// need to get previous day's data from day of interst to measure gap %
 const { from, to } = { from: "2023-01-01", to: "2023-12-31" };
 
 export async function orchestrateStrategy(): Promise<

@@ -14,7 +14,16 @@ export async function fetchAndSaveTickers(fileName: string, query: string) {
   try {
     const results = await client.queryObject(query);
 
-    Deno.writeTextFileSync(fileName, JSON.stringify(results.rows));
+    Deno.writeTextFileSync(
+      fileName,
+      JSON.stringify(
+        results.rows.map((a: any) => ({
+          ...a,
+          float: parseInt(a.float),
+          marketCap: parseInt(a.marketCap),
+        }))
+      )
+    );
   } catch (error) {
     console.log(error);
   }

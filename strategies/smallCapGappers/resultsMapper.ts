@@ -28,7 +28,7 @@ export const resultsMapper: ResultsMapper = (
       ...prev,
       {
         ...curr,
-        chart: chart ? `${CHART_URL}/charts/${chart.id}` : null,
+        chart: chart ? `${CHART_URL}/charts/${chart.id}?timeframe=5min` : null,
         floatRotation:
           (curr.float && curr.volume && curr.volume / curr.float) ?? null,
         preMarketVolume: sessionData.pmSessionVolume,
